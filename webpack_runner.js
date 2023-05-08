@@ -45,8 +45,10 @@ class SaveStatePlugin {
 }
 
 module.exports = (inp, callback) => {
-	const config = require(inp.configPath);
-
+	let config = require(inp.configPath);
+	if (typeof config === 'function') {
+		config = config(inp, { mode: 'production' });
+	}
 	config.context = inp.resourcePath;
 
 	if (config.output && config.output.path) {
