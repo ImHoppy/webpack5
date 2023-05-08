@@ -11,11 +11,11 @@ Error.prepareStackTrace = undefined;
 
 const webpackBuildTask = {
 	shouldBuild(resourceName) {
-		const numMetaData = GetNumResourceMetadata(resourceName, 'webpack_config');
+		const numMetaData = GetNumResourceMetadata(resourceName, 'webpack5_config');
 
 		if (numMetaData > 0) {
 			for (let i = 0; i < numMetaData; i++) {
-				const configName = GetResourceMetadata(resourceName, 'webpack_config');
+				const configName = GetResourceMetadata(resourceName, 'webpack5_config');
 
 				if (shouldBuild(configName)) {
 					return true;
@@ -76,10 +76,10 @@ const webpackBuildTask = {
 			let error = null;
 			const configs = [];
 			const promises = [];
-			const numMetaData = GetNumResourceMetadata(resourceName, 'webpack_config');
+			const numMetaData = GetNumResourceMetadata(resourceName, 'webpack5_config');
 
 			for (let i = 0; i < numMetaData; i++) {
-				configs.push(GetResourceMetadata(resourceName, 'webpack_config', i));
+				configs.push(GetResourceMetadata(resourceName, 'webpack5_config', i));
 			}
 
 			for (const configName of configs) {
@@ -100,7 +100,7 @@ const webpackBuildTask = {
 					const resourcePath = path.resolve(GetResourcePath(resourceName));
 
 					while (buildingInProgress) {
-						console.log(`webpack is busy: we are waiting to compile ${resourceName} (${configName})`);
+						console.log(`webpack5 is busy: we are waiting to compile ${resourceName} (${configName})`);
 						await sleep(3000);
 					}
 
@@ -126,7 +126,7 @@ const webpackBuildTask = {
 								buildingInProgress = false;
 								currentBuildingModule = '';
 								currentBuildingScript = '';
-								reject("worker farm webpack errored out");
+								reject("worker farm webpack5 errored out");
 								return;
 							}
 
@@ -137,7 +137,7 @@ const webpackBuildTask = {
 								buildingInProgress = false;
 								currentBuildingModule = '';
 								currentBuildingScript = '';
-								reject("webpack got an error");
+								reject("webpack5 got an error");
 								return;
 							}
 
@@ -170,4 +170,4 @@ function sleep(ms) {
 	return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-RegisterResourceBuildTaskFactory('z_webpack', () => webpackBuildTask);
+RegisterResourceBuildTaskFactory('z_webpack5', () => webpackBuildTask);
